@@ -36,17 +36,20 @@ Route::post('/editarck/{id}', 'ChecklistController@editarChecklist');
 Route::post('/novoItem/{id}', 'ChecklistController@novoItem');
 Route::get('/deletarItem/{id}', 'ChecklistController@deletarItem');
 
+Route::get('/aprovar/{id}', 'ChecklistController@aprovar');
+Route::get('/rejeitar/{id}', 'ChecklistController@rejeitar');
+
 
 
 //rotas para o usuario
-
-
 Route::post('/vincular', 'ChecklistController@vincularCk');
+Route::get('/desvincular/{id}', 'ChecklistController@desvincularCk');
+Route::get('/listItens/{id}', 'ChecklistController@listItens');
+Route::get('/validar', 'ChecklistController@validar');
 
 
+//funcoes dos aquivos 
+Route::post('/store/{id}', 'FileController@store');
+Route::get('/remove/{id}', 'FileController@remove');
 
 
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

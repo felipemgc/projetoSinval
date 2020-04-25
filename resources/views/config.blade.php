@@ -48,9 +48,9 @@
         @foreach($cks as $key => $ck)
         <tr>
           <th scope="row">{{$ck->id}}</th>
-          <td>{{$ck->name}}</td>
-          <td>{{$ck->description}}</td>
-          <td><a href="{{url('editarck')}}/{{$ck->id}}">Editar</a> | <a href="{{url('deletarck')}}/{{$ck->id}}">Deletar</a></td>
+          <td><a href="{{url('editarck')}}/{{$ck->id}}">{{$ck->name}}</a></td>
+          <td><a href="{{url('editarck')}}/{{$ck->id}}">{{$ck->description}}</a></td>
+          <td><a href="{{url('deletarck')}}/{{$ck->id}}">x</a></td>
         </tr>
         @endforeach
        

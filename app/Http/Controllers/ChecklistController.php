@@ -7,6 +7,7 @@ use Auth;
 use App\Checklist;
 use App\Checklist_item;
 use App\Checklist_user;
+use App\Attachment;
 
 class ChecklistController extends Controller
 {
@@ -27,29 +28,32 @@ class ChecklistController extends Controller
      */
     public function checklist(request $request)
     {
-        $cks = CheckList::get();    
+        $user = Auth::user();
+        $cks = Checklist::get();    
+        
 
-
-        return view('config', compact('cks'));
+        return view('config', compact('user', 'cks'));
     }
     public function formEdita(request $request , $id)
     {
-        $ck = CheckList::where('id', $id)->first();
+        $user = Auth::user();
+        $ck = Checklist::where('id', $id)->first();
 
-        $itens = CheckList_item::where('checklist_id', $id)->get();
+        $itens = Checklist_item::where('checklist_id', $id)->get();
 
-        return view('configEdita', compact('ck', 'itens', 'id'));
+        return view('configEdita', compact('user', 'ck', 'itens', 'id'));
     }
     
 
     public function novoChecklist(request $request)
     {
-       $data = $request->validate([
+         
+        $data = $request->validate([
         'name' => 'required|max:255',
         'description' => 'required|max:255',
         ]);
 
-        $ck = new CheckList();
+        $ck = new Checklist();
         $ck->name = $data['name'];
         $ck->description = $data['description'];
         $ck->save();
@@ -60,14 +64,14 @@ class ChecklistController extends Controller
     
     public function deletarChecklist(request $request, $id)
     {
-        CheckList::where('id', $id)->delete();
+        Checklist::where('id', $id)->delete();
 
         return redirect('/checklist');
     }
 
     public function editarChecklist(request $request, $id)
     {
-        $ck = CheckList::where('id', $id)->first();
+        $ck = Checklist::where('id', $id)->first();
         $ck->name = $request->input('name');
         $ck->description = $request->input('description');
         $ck->save();
@@ -84,7 +88,7 @@ class ChecklistController extends Controller
             'description' => 'max:255',
         ]);
 
-        $ck_item = new CheckList_item();
+        $ck_item = new Checklist_item();
         $ck_item->checklist_id = $id;
         $ck_item->name = $data['name'];
         $ck_item->description = $data['description'];
@@ -96,10 +100,10 @@ class ChecklistController extends Controller
     public function deletaritem(request $request, $id)
     {
     
-        $item = CheckList_item::where('id', $id)->first();
+        $item = Checklist_item::where('id', $id)->first();
         $idck = $item->checklist_id;
 
-        CheckList_item::where('id', $id)->delete();
+        Checklist_item::where('id', $id)->delete();
 
         return redirect('/editarck/'.$idck);
     }
@@ -109,14 +113,66 @@ class ChecklistController extends Controller
     
         $user = Auth::user();
 
-        $ck_user = new CheckList_user();
+        $ck_user = new Checklist_user();
         $ck_user->user_id = $user->id;
         $ck_user->checklist_id = $request->input('lists');
         $ck_user->save();
 
         return redirect('/home');
     }
+    public function desvincularCk(request $request, $id)
+    {   
 
+        Checklist_user::where('id', $id)->delete();
+
+        return redirect('/home');
+    }
+
+    public function listItens(request $request, $id)
+    {   
+
+
+        $user = Auth::user();
+
+        $ck_user = Checklist_user::where('id', $id)->first();
+        if($ck_user){
+            $ck = Checklist::where('id', $ck_user->checklist_id)->first();
+
+            $ck_itens = Checklist_item::where('checklist_id', $ck_user->checklist_id)->get();
+        }
+
+        return view('listItens', compact('user','ck_user', 'ck', 'ck_itens'));
+    }
+
+    public function validar(request $request){
+        $user = Auth::user();
+        $attachments = Attachment::where('approved', 0)->
+                                    where('unapproved', 0)->get();
+                                   
+        return view('validar', compact('user', 'attachments'));
+
+
+    }
+
+    public function aprovar(request $request, $id){
+        Attachment::where('id', $id)
+                        ->update(['approved' => 1]);
+        return redirect()->back();
+
+    }
+
+    public function rejeitar(request $request, $id){
+        Attachment::where('id', $id)
+                        ->update(['unapproved' => 1]);
+        return redirect()->back();
+
+    }
+
+
+
+
+
+    
 
     
     

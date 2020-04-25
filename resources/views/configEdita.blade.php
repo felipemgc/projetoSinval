@@ -95,7 +95,7 @@
           <th scope="row">{{$item->id}}</th>
           <td>{{$item->name}}</td>
           <td>{{$item->description}}</td>
-          <td><a href="{{url('deletarItem')}}/{{$item->id}}">Deletar</a></td>
+          <td><a href="{{url('deletarItem')}}/{{$item->id}}">x</a></td>
         </tr>
         @endforeach
        

@@ -20,7 +20,9 @@
       </div>
     </form>
 
-    <div class="col-12"> &nbsp; </div>    
+    <div class="col-12"> &nbsp; </div>   
+    @if(count($cks_user))
+    <h4>Checklists</h4> 
     <ul class="list-group">
       @foreach($cks_user as $key => $ck_user)
       <?php
@@ -29,13 +31,18 @@
 
       ?>
 
+      @if($ck)
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <a href="#" >{{$ck->name}}: {{$ck->description}}</a>
-          <span class="badge badge-primary badge-pill">{{$ck->Checklist_itens()->count()}}</span>
-        
+        <span class="badge badge-primary badge-pill ">{{$ck->Checklist_itens()->count()}}</span>
+        <a href="{{url('listItens')}}/{{$ck_user->id}}" >{{$ck->name}}: {{$ck->description}}</a>
+        <a href="{{url('desvincular')}}/{{$ck_user->id}}" >x</a>
       </li>
+      @endif
       @endforeach
       
     </ul>
+    @else
+      Não há checklists associados.
+    @endif
 </div>
 @endsection

@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -32,10 +33,14 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @auth
+                    @if($user && $user->adm)
                     <ul class="navbar-nav ">
                         <a class="nav-link" href="{{ url('checklist') }}">Checklists</a>
-                        <a class="nav-link" href="{{ url('checklist') }}">Verificar</a>
+                        <a class="nav-link" href="{{ url('validar') }}">Validar</a>
                     </ul>
+                    @endif  
+                    @endauth                 
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

@@ -14,11 +14,12 @@ class Attachment extends Model
     
     public function user()
     {
-        return $this->belongsTo('App\User','user_id','user_id');
+        return $this->belongsTo('App\user', 'user_id', 'id');
     }
 
-    public function item(){
-        return $this->hasOne('App\Item','item_id','item_id');
+    public function checklist_item()
+    {
+        return $this->belongsTo('App\Checklist_item', 'checklist_item_id', 'id');
     }
 }
     
