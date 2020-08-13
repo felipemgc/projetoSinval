@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
-use App\Checklist;
-use App\Checklist_item;
-use App\Checklist_user;
-
 
 class HomeController extends Controller
 {
@@ -28,12 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        
-        $cks = Checklist::get();
-
-        $cks_user = Checklist_user::where('user_id', $user->id)->get();
-
-        return view('home', compact('user', 'cks', 'cks_user'));
+        return view('home');
     }
 }

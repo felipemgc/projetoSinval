@@ -53,3 +53,7 @@ Route::post('/store/{id}', 'FileController@store');
 Route::get('/remove/{id}', 'FileController@remove');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
